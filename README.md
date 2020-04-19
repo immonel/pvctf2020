@@ -1,13 +1,54 @@
 # PVKuvahaaste2020 
 
-On 17.4 the Finnish Defence Forces tweeted this [challenge](https://twitter.com/Puolustusvoimat/status/1251139182111739904)
-[TODO](https://asdasd) decided to take a a swing at the challenge and he quickly revealed that the data had a link to mysterious *.bin*
- file. 
- 
-## The barcode
+On 17.4. the Finnish Defence Forces tweeted a challenge related to recruitment [challenge](https://twitter.com/Puolustusvoimat/status/1251139182111739904) which contained a QR-code.
+[@JaanTaponen](https://www.github.com/JaanTaponen) sent me a link to this tweet and I was curious to see what the QR-code would contain. I've been interested in CTF-type challenges and reverse engineering for a long time but this was the first time I actually attempted solving one.
 
-Simply reading the barcode and encoding the data first to ```base32``` and then ```rot47``` revealed a link to a site where you could download a mysterious bin file. 
--etc
+## The barcode
+<img src="./attachments/EVzwc0oU4AAHIX1.jpeg"  width="25%">
+
+A quick scan revealed an encrypted string:
+```
+HFCUKQKENFPF4SCIJBOUOMR5IU5EAPJ5GZOTOOS6G45FY5LYLY5D2PSAHJCUMRDOHI2WYYLGLRQWQZ24MFPWCXYKBI4UKRKBNFPF4YDFMROWCYK5MBSV2YDHM5PECRZZGI6EMOJSGJCEKNTBL5QV6XJTHI7QUCRHYOSEISSFJJCDSSWDWY6DZQ5EJJCELQ5EEBLTGQ2GIU3FYN2AIM2DMWBAGY5CARJSINDTURJSEA3DUPGDUQQEIMRSEBCTMOJVYOSCAPR2IRCMHJGDUQ7SARZSHI4TMNSEIQZF2CQK
+```
+
+I started to fiddle around with the string using [CyberChef](https://gchq.github.io/CyberChef) and quickly found out that it was encrypted first with `ROT47` and then with `Base32`. I also checked if the image contained any metadata but it didn't.
+After decrypting the string contained two links; one to a job advertisement, and one to a mysterious binary file named `pvhakuhaaste2020.bin` with a message roughly saying `A brute-force attack is not needed or allowed at any point`. At this time I knew I was going to dive straight into the deep end with this challenge.
+
+## The binary file
+
+And so I downloaded the binary file and took a look into the hexdump which didn't really give any insight since the file was over half a megabyte in size. I inspected the cleartext strings contained in the file and it appeared to be a puzzle.
+```
+$ strings pvhakuhaaste2020.bin
+
+[...]
+Pick any number between 0 and 99: 
+Secret key: %s
+Next step is %i.%i.%i.%i:%i
+IP is valid until May 6 2020 2159Z
+Your secret is %s
+%s %s
+%02x
+Valid until May 6 2020 2159Z
+Is this correct path?: 
+Bye..
+[...]
+```
+I then tried to execute it and sure enough, I was greeted with a message:
+```
+$ ./pvhakuhaaste2020.bin
+
+Valid until May 6 2020 2159Z
+Is this correct path?:
+```
+I attempted to enter something and the program just exitted with a message `Bye..`.
+I then loaded the file into `gdb`, the GNU Project Debugger and also downloaded a program called [Binary Ninja](www.binary.ninja). This was my first time using either of these tools. I knew the basic principles of assembly languages, computer memory and registers, but hadn't inspected actual program's working logic based only on reading Intel x86-64 assembler instructions. I played around for a moment with gdb, but by itself it didn't reveal aynthing useful since the binary file didn't contain any debugging symbols. I tried to take a look at the functions, but found nothing useful:
+<img src="./attachments/exhibit2.png">
+
+With a brief introduction of watching a related video by [@LiveOverflow](https://www.github.com/LiveOverflow) I loaded up Binary Ninja and started to break down this programs contents and execution piece by piece. At first this seemed like a tedious task since the binary file consisted of hundreds of arbitrarily named functions, but eventually I found the bits that actually matter. First I looked into the part where the user input is asked:
+
+<img src="./attachments/exhibit1.png" width="75%">
+
+It seemed like it takes a input string, XOR's each character with something and checks if the result's lower 8 bits equal to `0x38`. 
 
 ## The decoy
 
