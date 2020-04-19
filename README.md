@@ -65,7 +65,7 @@ TODO
 
 We landed on the real page that look something like this:
 
-![image](./damn.png)
+![image](./attachments/web-page.png)
 
 From know on you can guess that challenge was almost done.
 
