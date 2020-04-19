@@ -102,8 +102,7 @@ In the end my theory was proven to be very false or then PV really is playing so
 
 ## The real IP
 
-TODO
-
+After searching scraping through the binary once again [@immonel](https://github.com/immonel) found another address.
 We landed on the real page that look something like this:
 
 ![image](./attachments/web-page.png)
