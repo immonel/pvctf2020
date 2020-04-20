@@ -17,7 +17,7 @@ After decoding, the string contained two links; one to a job advertisement, and 
 ## The binary file
 
 And so I downloaded the binary file and took a look into the hexdump which didn't really give any insight since the file was over half a megabyte in size. I inspected the cleartext strings contained in the file and it appeared to be a puzzle.
-```
+```bash
 $ strings pvhakuhaaste2020.bin
 
 [...]
@@ -34,7 +34,7 @@ Bye..
 [...]
 ```
 I then tried to execute it and sure enough, I was greeted with a message:
-```
+```bash
 $ ./pvhakuhaaste2020.bin
 
 Valid until May 6 2020 2159Z
