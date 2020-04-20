@@ -11,8 +11,8 @@ A quick scan revealed an encrypted string:
 HFCUKQKENFPF4SCIJBOUOMR5IU5EAPJ5GZOTOOS6G45FY5LYLY5D2PSAHJCUMRDOHI2WYYLGLRQWQZ24MFPWCXYKBI4UKRKBNFPF4YDFMROWCYK5MBSV2YDHM5PECRZZGI6EMOJSGJCEKNTBL5QV6XJTHI7QUCRHYOSEISSFJJCDSSWDWY6DZQ5EJJCELQ5EEBLTGQ2GIU3FYN2AIM2DMWBAGY5CARJSINDTURJSEA3DUPGDUQQEIMRSEBCTMOJVYOSCAPR2IRCMHJGDUQ7SARZSHI4TMNSEIQZF2CQK
 ```
 
-I started to fiddle around with the string using [CyberChef](https://gchq.github.io/CyberChef) and quickly found out that it was encrypted first with `ROT47` and then with `Base32`. I also checked if the image contained any metadata but it didn't.
-After decrypting, the string contained two links; one to a job advertisement, and one to a mysterious binary file named `pvhakuhaaste2020.bin` with a message roughly translating to `A brute-force attack is not needed or allowed at any point`. At this point I knew I was going to dive straight into the deep end with this challenge.
+I started to fiddle around with the string using [CyberChef](https://gchq.github.io/CyberChef) and quickly found out that it was encoded first with `ROT47` and then with `Base32`. I also checked if the image contained any metadata but it didn't.
+After decoding, the string contained two links; one to a job advertisement, and one to a mysterious binary file named `pvhakuhaaste2020.bin` with a message roughly translating to `A brute-force attack is not needed or allowed at any point`. At this point I knew I was going to dive straight into the deep end with this challenge.
 
 ## The binary file
 
