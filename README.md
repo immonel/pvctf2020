@@ -6,7 +6,7 @@ My friend [@JaanTaponen](https://www.github.com/JaanTaponen) sent me a link to t
 ## The QR-code
 <img src="./attachments/EVzwc0oU4AAHIX1.jpeg"  width="25%">
 
-A quick scan revealed an encrypted string:
+A quick scan revealed an encoded string:
 ```
 HFCUKQKENFPF4SCIJBOUOMR5IU5EAPJ5GZOTOOS6G45FY5LYLY5D2PSAHJCUMRDOHI2WYYLGLRQWQZ24MFPWCXYKBI4UKRKBNFPF4YDFMROWCYK5MBSV2YDHM5PECRZZGI6EMOJSGJCEKNTBL5QV6XJTHI7QUCRHYOSEISSFJJCDSSWDWY6DZQ5EJJCELQ5EEBLTGQ2GIU3FYN2AIM2DMWBAGY5CARJSINDTURJSEA3DUPGDUQQEIMRSEBCTMOJVYOSCAPR2IRCMHJGDUQ7SARZSHI4TMNSEIQZF2CQK
 ```
@@ -79,7 +79,7 @@ We first tried to visit the page with a Tor browser without any response. The as
 
 #### nmap
 
-A quick nmap scan reveladed that server didn't have much running with TCP. Only the port 21 was interesting. Connecting to it with anonymous ftp obviously didn't work at all. 
+A quick nmap scan revealed that server didn't have much running (that we could access with TCP). Only the port 21 was interesting. Connecting to it with anonymous ftp obviously didn't work at all. 
 ```
 Host is up (0.35s latency).
 Not shown: 994 closed ports
@@ -93,7 +93,7 @@ PORT    STATE    SERVICE
 
 Nmap done: 1 IP address (1 host up) scanned in 49.97 seconds****
 ```
-The reason was quite obvious, a deeper scan for the service banners reveled that the ```port 21``` *may* have had some kind of firewall running or nmap didin't understand what it was talking to. Inspecting the TCP protocol exchange more deeply didn't reveal anything either. The server just disconnected after the first handshake attempt, so even sending packets with Netcat wouldn't work.
+The reason was quite obvious, a deeper scan for the service banners reveled that the ```port 21``` *may* have had some kind of firewall running or nmap didn't understand what it was talking to. Inspecting the TCP protocol exchange more deeply didn't however reveal anything either. The server just disconnected after the first handshake attempt, so even sending packets with Netcat wouldn't work.
 
 ```
 21/tcp  open     tcpwrapped
@@ -120,13 +120,11 @@ UNDER CONSTRUCTION
 
 ## The real IP
 
-TODO
-
-We landed on the real page that look something like this:
+Scraping through the *.bin* file once more reveladed another ip-address that then landed us on the correct page that looked something like this:
 
 ![image](./attachments/web-page.png)
 
-From know on you can guess that challenge was almost done. We wrote a very simple Python script which grabs the key and tries to POST with all the secrets we found one by one.
+From now on you can guess that challenge was almost done. We wrote a very simple Python script which grabs the key and tries to POST with all the secrets that we had found one by one.
 
 ### Python script to solve the puzzle
 
