@@ -130,31 +130,24 @@ From know on you can guess that challenge was almost done. We wrote a very simpl
 
 ### Python script to solve the puzzle
 
-```
+```python
 import requests
 from bs4 import BeautifulSoup
 
-url = "http://104.248.xx.xxx"
+orig_url = "http://104.xx.xx.xx"
+page = BeautifulSoup(requests.get(orig_url).text, 'lxml')
+key = page.p.findAll('b')[0].text
+# parsing the alternative url
+#url = page.p.findAll('b')[1].text
 
-page = requests.request("GET", url)
-soup = BeautifulSoup(page.content, 'html.parser')
+secrets = ["AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA",]
 
-key = soup.p.b.get_text()
-
-secrets = [
-    '[OBFUSCATED]',
-    '[OBFUSCATED]',
-    '[OBFUSCATED]',
-    '[OBFUSCATED]',
-    '[OBFUSCATED]',
-    '[OBFUSCATED]',
-    '[OBFUSCATED]'
-    ]
-
-for secret in secrets:
-    headers = {}
-    payload = {'key':key, 'secret':secret}
-    print(requests.post(url, headers = headers, data = payload).text.encode('utf8'))
+for s in secrets:
+    payload = {
+        'secret': s,
+        'key': key
+    }
+    print(requests.request("POST", orig_url, data = payload).text)  
 ```
 
 First we pull the secret from the original page with ```GET``` and then iterate through the found secrets with the given instructions. So that would be ```POST``` with the secret, key data values. 
